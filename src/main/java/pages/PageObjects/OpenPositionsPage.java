@@ -48,7 +48,8 @@ public class OpenPositionsPage extends BasePage {
         return driver.findElements(jobList).size() > 0;
     }
 
-    public boolean checkJobDetails(String expectedPositionKeyword, String expectedDept, String expectedLoc) {
+    public boolean checkJobDetails(String expectedPositionKeyword, String expectedDept, String expectedLoc) throws InterruptedException {
+        Thread.sleep(10000);
         List<WebElement> jobs = driver.findElements(jobListItems);
 
         if (jobs.isEmpty()) {
@@ -77,7 +78,10 @@ public class OpenPositionsPage extends BasePage {
                 System.out.println("Actual : " + positionText + " | " + departmentText + " | " + locationText);
                 allMatch = false;
             }
+
         }
+
+
         return allMatch;
     }
 
