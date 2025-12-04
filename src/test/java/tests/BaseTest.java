@@ -6,8 +6,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,22 +36,46 @@ public class BaseTest {
 
         String browserName = ConfigReader.getProperty("browser"); //
 
+        boolean isHeadless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+
         switch (browserName.toLowerCase()) {
             case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if (isHeadless) {
+                    firefoxOptions.addArguments("--headless");
+                    firefoxOptions.addArguments("--window-size=1920,1080");
+                }
+                // WebDriverManager.firefoxdriver().setup(); // Selenium 4.16+ ile gerek kalmadı
+                driver = new FirefoxDriver(firefoxOptions);
                 break;
+
             case "edge":
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (isHeadless) {
+                    edgeOptions.addArguments("--headless=new");
+                    edgeOptions.addArguments("--window-size=1920,1080");
+                }
+                // WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver(edgeOptions);
                 break;
+
             case "safari":
                 WebDriverManager wdmSafari = WebDriverManager.safaridriver().browserInDocker();
                 driver = wdmSafari.create();
                 break;
+
             default:
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+                // Chrome
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (isHeadless) {
+                    chromeOptions.addArguments("--headless=new"); // Yeni ve daha stabil headless modu
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--no-sandbox"); // CI ortamları için gerekli olabilir
+                    chromeOptions.addArguments("--disable-dev-shm-usage"); // Hafıza yönetimi için
+                    chromeOptions.addArguments("--disable-gpu");
+                }
+                // WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver(chromeOptions);
                 break;
         }
 

@@ -5,11 +5,11 @@ on:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
-    workflow_dispatch:
+  workflow_dispatch: # Manuel çalıştırma butonu için
 
 jobs:
   test:
-    name: Run UI Tests
+    name: Run UI Tests (Headless)
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +23,10 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      # Ubuntu üzerinde UI testi çalıştırabilmek için Xvfb (Sanal Ekran) kullanıyoruz
       - name: Run Tests with Maven
-        run: xvfb-run mvn clean test
+        # Headless mod kodda aktif olduğu için sadece test komutu yeterlidir
+        run: mvn clean test
 
-      # Test sonuçlarını (Allure Results) artifact olarak yüklüyoruz
       - name: Upload Allure Results
         if: always() # Test başarısız olsa bile raporu yükle
         uses: actions/upload-artifact@v4
