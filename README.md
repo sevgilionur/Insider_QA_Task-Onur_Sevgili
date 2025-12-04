@@ -1,0 +1,107 @@
+# Insider Quality Assurance Automation Task
+
+This project contains an automated test suite for the [Insider](https://useinsider.com/) web application. The project focuses on verifying the "Careers" page functionality, specifically for the Quality Assurance department, validating job filtering, and application redirection.
+
+## 🏗️ Project Architecture
+
+The project follows the **Page Object Model (POM)** design pattern to ensure code reusability, maintainability and readability.
+
+### Technology Stack
+*   **Language:** Java 11
+*   **Web Automation:** Selenium WebDriver (4.16.1)
+*   **Test Runner:** TestNG (7.7.1)
+*   **Build Tool:** Maven
+*   **Driver Management:** WebDriverManager
+*   **Logging:** Log4j2
+*   **Reporting:** Allure Reports
+
+## 📋 Test Scenario
+
+The automation script covers the following end-to-end flow:
+
+1.  **Home Page Verification:**
+    *   Visit `https://useinsider.com/` and verify the home page is opened.
+2.  **Careers Page Navigation:**
+    *   Navigate to **Company** > **Careers**.
+    *   Verify that the Careers page, "Locations", "Teams", and "Life at Insider" blocks are visible.
+3.  **Job Filtering (Quality Assurance):**
+    *   Go to the Quality Assurance Careers page.
+    *   Click "See all QA jobs".
+    *   Filter jobs by **Location:** "Istanbul, Turkey" and **Department:** "Quality Assurance".
+    *   Verify the presence of the job list.
+4.  **Validation of Results:**
+    *   Check that all listed jobs match the criteria:
+        *   **Position** contains "Quality Assurance"
+        *   **Department** contains "Quality Assurance"
+        *   **Location** contains "Istanbul, Turkey"
+5.  **Redirection Check:**
+    *   Click the "View Role" button on a job card.
+    *   Verify that the user is redirected to the **Lever Application form page**.
+
+## ✅ Implementation Details
+
+*   **No BDD Frameworks:** As per requirements, no Cucumber/Gherkin frameworks were used. The focus is on pure Java + Selenium.
+*   **Optimized Selectors:** Robust CSS Selectors and XPath locators are used for stability.
+*   **Assertions:** TestNG assertions are utilized to validate test steps.
+*   **Clean Code:** The project follows standard Java coding conventions and separates logic (Pages) from execution (Tests).
+
+## 📂 Project Structure
+
+```text
+src
+├── main
+│   └── java
+│       └── pages
+│           ├── BaseComponents  # BasePage with common actions
+│           └── PageObjects     # HomePage, CareersPage, OpenPositionsPage
+├── test
+│   ├── java
+│   │   ├── tests           # InsiderTests (Test Execution)
+│   │   └── utils           # TestListener (Logging & Reporting)
+│   └── resources
+│       ├── global.properties # Configuration (Browser selection)
+│       └── log4j2.xml        # Logging configuration
+```
+
+## 🚀 How to Run
+
+### Prerequisites
+*   Java JDK 11 or higher
+*   Maven installed and configured
+*   Chrome Browser (default)
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/Insider-QA-Task.git
+cd Insider-QA-Task
+```
+
+### 2. Install Dependencies
+```bash
+mvn clean install
+```
+
+### 3. Run Tests
+You can run the tests using Maven:
+```bash
+mvn clean test
+```
+*By default, the test runs on **Chrome**. You can change the browser in `src/test/resources/global.properties`.*
+
+### 4. Generate Allure Report
+After the test execution, generate and view the HTML report using:
+```bash
+mvn allure:serve
+```
+
+## 📊 Configuration
+
+You can configure the browser type in `src/test/resources/global.properties`:
+
+```properties
+browser=chrome
+# Options: chrome, firefox, edge, safari
+```
+
+## 👤 Author
+**Onur Sevgili**
