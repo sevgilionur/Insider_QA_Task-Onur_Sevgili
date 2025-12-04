@@ -15,7 +15,7 @@ public class OpenPositionsPage extends BasePage {
     private By filterJobsDropdown= By.xpath("//*[@title=\"Quality Assurance\"]");
     private By jobList = By.id("jobs-list");
     private By jobListItems = By.xpath("//div[@id='jobs-list']//div[contains(@class, 'position-list-item')]");
-    private By viewRoleButton = By.xpath(".//a[text()='View Role']"); // Liste elemanı içindeki buton
+    private By viewRoleButton = By.xpath(".//a[text()='View Role']");
     private By jobTitleLocator = By.xpath(".//p[contains(@class, 'position-title')]");
     private By jobDepartmentLocator = By.xpath(".//span[contains(@class, 'position-department')]");
     private By jobLocationLocator = By.xpath(".//div[contains(@class, 'position-location')]");
@@ -44,7 +44,6 @@ public class OpenPositionsPage extends BasePage {
         wait.until(ExpectedConditions.textToBePresentInElementLocated(firstJobLocation, location));
     }
 
-        
     public boolean isJobListPresent() {
         return driver.findElements(jobList).size() > 0;
     }

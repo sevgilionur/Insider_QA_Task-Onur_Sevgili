@@ -68,7 +68,6 @@ public class BaseTest {
         return driver;
     }
 
-    //data reader method
     public List<HashMap<String, String[]>> getJsonDataToMap(String filePath) throws IOException {
         //read json to string
         String jsonContent = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
