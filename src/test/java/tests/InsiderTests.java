@@ -22,6 +22,7 @@ public class InsiderTests extends BaseTest {
 
         logger.info("Step 1: Visit home page and check if opened");
         Assert.assertTrue(homePage.isHomePageOpened(), "Home page is not opened!");
+        homePage.acceptCookies();
 
         logger.info("Step 2: check Career page, its Locations, Teams and Life at Insider blocks are open or not");
         homePage.goToCareersPage();
