@@ -33,7 +33,7 @@ The automation script covers the following end-to-end flow:
     *   Check that all listed jobs match the criteria:
         *   **Position** contains "Quality Assurance"
         *   **Department** contains "Quality Assurance"
-        *   **Location** contains "Istanbul, Turkey"
+        *   **Location** contains "Istanbul, Turkiye"
 5.  **Redirection Check:**
     *   Click the "View Role" button on a job card.
     *   Verify that the user is redirected to the **Lever Application form page**.
