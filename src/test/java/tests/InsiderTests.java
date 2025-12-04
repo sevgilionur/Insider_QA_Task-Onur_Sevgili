@@ -1,0 +1,52 @@
+package tests;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.testng.Assert;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+import pages.PageObjects.CareersPage;
+import pages.PageObjects.HomePage;
+import pages.PageObjects.OpenPositionsPage;
+import utils.TestListener;
+
+
+@Listeners({TestListener.class})
+public class InsiderTests extends BaseTest {
+
+    private static final Logger logger = LogManager.getLogger(InsiderTests.class);
+
+    @Test(description = "Insider Career Page and Job Filtering Test")
+    public void testInsiderCareers() throws InterruptedException {
+
+        logger.info("Step 1: Visit home page and check if opened");
+        HomePage homePage = new HomePage(driver);
+        homePage.goToUrl("https://useinsider.com/");
+        homePage.acceptCookies();
+        Assert.assertTrue(homePage.isHomePageOpened(), "Home page is not opened!");
+
+        logger.info("Step 2: check Career page, its Locations, Teams and Life at Insider blocks are open or not");
+        homePage.goToCareersPage();
+        CareersPage careersPage = new CareersPage(driver);
+        Assert.assertTrue(careersPage.isPageOpened(), "Careers page is not opened! URL or Title mismatch.");
+        Assert.assertTrue(careersPage.isLocationsBlockOpened(), "Locations block is not visible!");
+        Assert.assertTrue(careersPage.isTeamsBlockOpened(), "Teams block is not visible!");
+        Assert.assertTrue(careersPage.isLifeAtInsiderBlockOpened(), "Life at Insider block is not visible!");
+
+        logger.info("Step 3: Go to QA Page, filter jobs and check list presence");
+        OpenPositionsPage positionsPage = new OpenPositionsPage(driver);
+        positionsPage.openQAPage();
+        positionsPage.clickSeeAllQAJobs();
+        positionsPage.filterJobs();
+        Assert.assertTrue(positionsPage.isJobListPresent(), "Job list is empty after filtering!");
+
+        logger.info("Step 4: Check all jobs' Position, Department and Location");
+        boolean detailsMatch = positionsPage.checkJobDetails("Quality Assurance","Quality Assurance","Istanbul, Turkiye");
+        Assert.assertTrue(detailsMatch, "Some jobs do not match the filter criteria!");
+
+        logger.info("Step 5: Click View Role and check redirection to Lever");
+        positionsPage.clickFirstViewRoleButton();
+        Assert.assertTrue(positionsPage.isRedirectedToLever(), "Not redirected to Lever application page!");
+
+    }
+}
