@@ -37,11 +37,11 @@ public class InsiderTests extends BaseTest {
         OpenPositionsPage positionsPage = new OpenPositionsPage(driver);
         positionsPage.openQAPage();
         positionsPage.clickSeeAllQAJobs();
-        positionsPage.filterJobs();
+        positionsPage.filterJobs("Istanbul, Turkiye", "Quality Assurance");
         Assert.assertTrue(positionsPage.isJobListPresent(), "Job list is empty after filtering!");
 
         logger.info("Step 4: Check all jobs' Position, Department and Location");
-        boolean detailsMatch = positionsPage.checkJobDetails("Quality Assurance","Quality Assurance","Istanbul, Turkiye");
+        boolean detailsMatch = positionsPage.checkJobDetails("Quality Assurance", "Quality Assurance", "Istanbul, Turkiye");
         Assert.assertTrue(detailsMatch, "Some jobs do not match the filter criteria!");
 
         logger.info("Step 5: Click View Role and check redirection to Lever");
