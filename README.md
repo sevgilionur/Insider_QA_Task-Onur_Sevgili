@@ -11,7 +11,7 @@ The project follows the **Page Object Model (POM)** design pattern to ensure cod
 *   **Web Automation:** Selenium WebDriver (4.16.1)
 *   **Test Runner:** TestNG (7.7.1)
 *   **Build Tool:** Maven
-*   **Driver Management:** WebDriverManager
+*   **Driver Management:** WebDriverManager / Selenium Manager
 *   **Logging:** Log4j2
 *   **Reporting:** Allure Reports
 
@@ -41,6 +41,7 @@ The automation script covers the following end-to-end flow:
 ## ✅ Implementation Details
 
 *   **No BDD Frameworks:** As per requirements, no Cucumber/Gherkin frameworks were used. The focus is on pure Java + Selenium.
+*   **Configuration Management:** Test data (URL, Location, Department) and browser settings are managed externally via `src/test/resources/global.properties` using a custom `ConfigReader` utility.
 *   **Optimized Selectors:** Robust CSS Selectors and XPath locators are used for stability.
 *   **Assertions:** TestNG assertions are utilized to validate test steps.
 *   **Clean Code:** The project follows standard Java coding conventions and separates logic (Pages) from execution (Tests).
@@ -56,10 +57,10 @@ src
 │           └── PageObjects     # HomePage, CareersPage, OpenPositionsPage
 ├── test
 │   ├── java
-│   │   ├── tests           # InsiderTests (Test Execution)
-│   │   └── utils           # TestListener (Logging & Reporting)
+│   │   ├── tests           # BaseTest & InsiderTests (Test Execution)
+│   │   └── utils           # Utilities (ConfigReader, TestListener)
 │   └── resources
-│       ├── global.properties # Configuration (Browser selection)
+│       ├── global.properties # Test Configuration (Browser, URL, Data)
 │       └── log4j2.xml        # Logging configuration
 ```
 
@@ -96,11 +97,18 @@ mvn allure:serve
 
 ## 📊 Configuration
 
-You can configure the browser type in `src/test/resources/global.properties`:
+You can configure the test execution details in `src/test/resources/global.properties`:
 
 ```properties
+# Web Browser Configuration
 browser=chrome
 # Options: chrome, firefox, edge, safari
+
+# Application URLs
+baseUrl=https://useinsider.com/
+qaPageUrl=https://useinsider.com/careers/quality-assurance/
+
+
 ```
 
 ## 👤 Author

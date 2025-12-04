@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import pages.PageObjects.CareersPage;
 import pages.PageObjects.HomePage;
 import pages.PageObjects.OpenPositionsPage;
+import utils.ConfigReader;
 import utils.TestListener;
 
 
@@ -20,9 +21,6 @@ public class InsiderTests extends BaseTest {
     public void testInsiderCareers() throws InterruptedException {
 
         logger.info("Step 1: Visit home page and check if opened");
-        HomePage homePage = new HomePage(driver);
-        homePage.goToUrl("https://useinsider.com/");
-        homePage.acceptCookies();
         Assert.assertTrue(homePage.isHomePageOpened(), "Home page is not opened!");
 
         logger.info("Step 2: check Career page, its Locations, Teams and Life at Insider blocks are open or not");
@@ -35,7 +33,7 @@ public class InsiderTests extends BaseTest {
 
         logger.info("Step 3: Go to QA Page, filter jobs and check list presence");
         OpenPositionsPage positionsPage = new OpenPositionsPage(driver);
-        positionsPage.openQAPage();
+        positionsPage.openQAPage(ConfigReader.getProperty("qaPageUrl"));
         positionsPage.clickSeeAllQAJobs();
         positionsPage.filterJobs("Istanbul, Turkiye", "Quality Assurance");
         Assert.assertTrue(positionsPage.isJobListPresent(), "Job list is empty after filtering!");

@@ -24,8 +24,8 @@ public class OpenPositionsPage extends BasePage {
         super(driver);
     }
 
-    public void openQAPage() {
-        driver.get("https://useinsider.com/careers/quality-assurance/");
+    public void openQAPage(String qaPageUrl) {
+        driver.get(qaPageUrl);
     }
 
     public void clickSeeAllQAJobs() {

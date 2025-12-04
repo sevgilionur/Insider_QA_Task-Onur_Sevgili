@@ -12,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.PageObjects.HomePage;
+import utils.ConfigReader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,18 +31,7 @@ public class BaseTest {
     //Factory method
     public WebDriver initializeDriver() throws IOException {
 
-        Properties prop = new Properties();
-
-        String propertiesPath = System.getProperty("user.dir") + "/src/test/resources/global.properties";
-
-        try (FileInputStream fis = new FileInputStream(propertiesPath)) {
-            prop.load(fis);
-        } catch (IOException e) {
-            System.out.println("Global.properties not found, using default browser: chrome");
-            prop.setProperty("browser", "chrome");
-        }
-
-        String browserName = prop.getProperty("browser", "chrome"); // null gelirse chrome
+        String browserName = ConfigReader.getProperty("browser"); //
 
         switch (browserName.toLowerCase()) {
             case "firefox":
@@ -68,24 +58,13 @@ public class BaseTest {
         return driver;
     }
 
-    public List<HashMap<String, String[]>> getJsonDataToMap(String filePath) throws IOException {
-        //read json to string
-        String jsonContent = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-        //convert string array to hashmap (Jackson Databind - Object Mapper)
-        ObjectMapper mapper = new ObjectMapper();
-        List<HashMap<String, String[]>> data = mapper.readValue(jsonContent, new TypeReference<List<HashMap<String, String[]>>>() {
-        });
-        return data;
-        //returns: List {Hmap, Hmap, ...}
-    }
-
     @BeforeMethod(alwaysRun = true)
     public HomePage launchApplication() throws IOException {
         driver = initializeDriver();
         homePage = new HomePage(driver);
 
-        // Mevcut HomePage metodlarına uyarlandı
-        homePage.goToUrl("https://useinsider.com/");
+        // URL bilgisini properties dosyasından okuyoruz
+        homePage.goToUrl(ConfigReader.getProperty("baseUrl"));
         homePage.acceptCookies();
 
         Assert.assertTrue(homePage.isHomePageOpened(), "Home Page açılmadı!");

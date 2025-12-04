@@ -6,7 +6,7 @@ import pages.BaseComponents.BasePage;
 
 public class HomePage extends BasePage {
 
-    private By acceptCookiesButton = By.id("wt-cli-accept-all-btn"); // Cookie locater
+    private By acceptCookiesButton = By.id("wt-cli-accept-all-btn");
     private By companyMenu = By.xpath("//a[contains(text(),'Company')]");
     private By careersOption = By.xpath("//a[contains(text(),'Careers')]");
 
