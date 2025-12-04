@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -43,9 +44,9 @@ public class BaseTest {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (isHeadless) {
                     firefoxOptions.addArguments("--headless");
-                    firefoxOptions.addArguments("--window-size=1920,1080");
+                    firefoxOptions.addArguments("--width=1920");
+                    firefoxOptions.addArguments("--height=1080");
                 }
-                // WebDriverManager.firefoxdriver().setup(); // Selenium 4.16+ ile gerek kalmadı
                 driver = new FirefoxDriver(firefoxOptions);
                 break;
 
@@ -55,7 +56,6 @@ public class BaseTest {
                     edgeOptions.addArguments("--headless=new");
                     edgeOptions.addArguments("--window-size=1920,1080");
                 }
-                // WebDriverManager.edgedriver().setup();
                 driver = new EdgeDriver(edgeOptions);
                 break;
 
@@ -68,19 +68,28 @@ public class BaseTest {
                 // Chrome
                 ChromeOptions chromeOptions = new ChromeOptions();
                 if (isHeadless) {
-                    chromeOptions.addArguments("--headless=new"); // Yeni ve daha stabil headless modu
+                    chromeOptions.addArguments("--headless=new");
                     chromeOptions.addArguments("--window-size=1920,1080");
-                    chromeOptions.addArguments("--no-sandbox"); // CI ortamları için gerekli olabilir
-                    chromeOptions.addArguments("--disable-dev-shm-usage"); // Hafıza yönetimi için
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
                     chromeOptions.addArguments("--disable-gpu");
+                    // Bot algılamasını aşmak için User-Agent eklemek faydalıdır
+                    chromeOptions.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
                 }
-                // WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver(chromeOptions);
                 break;
         }
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+
+        // KRİTİK DÜZELTME:
+        // Headless modda maximize() yerine setSize() kullanıyoruz.
+        // Maximize bazen ekranı küçültebilir veya etkisiz kalabilir.
+        if (isHeadless) {
+            driver.manage().window().setSize(new Dimension(1920, 1080));
+        } else {
+            driver.manage().window().maximize();
+        }
 
         return driver;
     }
