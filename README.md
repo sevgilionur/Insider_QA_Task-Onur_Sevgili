@@ -14,6 +14,8 @@ The project follows the **Page Object Model (POM)** design pattern to ensure cod
 *   **Driver Management:** WebDriverManager / Selenium Manager
 *   **Logging:** Log4j2
 *   **Reporting:** Allure Reports
+*   **CI/CD:** GitHub Actions
+*   **Code Quality:** Qodana
 
 ## 📋 Test Scenario
 
@@ -95,6 +97,26 @@ After the test execution, generate and view the HTML report using:
 mvn allure:serve
 ```
 
+## 🤖 CI/CD Pipeline (GitHub Actions)
+
+This project uses GitHub Actions for Continuous Integration.
+
+### Workflows
+1.  **Java CI with Maven (`maven.yml`):**
+    *   Triggers on `push` and `pull_request`.
+    *   Sets up JDK 11.
+    *   Runs the Maven test suite.
+    *   Executes tests in **Headless Mode** to ensure compatibility with CI environments.
+
+2.  **Qodana Code Quality (`qodana_code_quality.yml`):**
+    *   Analyzes the code for potential bugs, vulnerabilities, and maintainability issues using JetBrains Qodana.
+
+### Checking Test Results in CI
+1.  Go to the **Actions** tab in the GitHub repository.
+2.  Select the latest workflow run.
+3.  Check the console output for test execution logs.
+4.  Artifacts (screenshots on failure) are uploaded if configured in the workflow.
+
 ## 📊 Configuration
 
 You can configure the test execution details in `src/test/resources/global.properties`:
@@ -108,7 +130,8 @@ browser=chrome
 baseUrl=https://useinsider.com/
 qaPageUrl=https://useinsider.com/careers/quality-assurance/
 
-
+# Headless Mode (Recommended for CI)
+headless=false
 ```
 
 ## 👤 Author

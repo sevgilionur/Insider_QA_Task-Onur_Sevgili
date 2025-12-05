@@ -49,7 +49,7 @@ public class OpenPositionsPage extends BasePage {
     }
 
     public boolean checkJobDetails(String expectedPositionKeyword, String expectedDept, String expectedLoc) throws InterruptedException {
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         List<WebElement> jobs = driver.findElements(jobListItems);
 
         if (jobs.isEmpty()) {
@@ -80,7 +80,6 @@ public class OpenPositionsPage extends BasePage {
             }
 
         }
-
 
         return allMatch;
     }
